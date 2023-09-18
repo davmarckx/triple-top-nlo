@@ -1,19 +1,10 @@
 #!/usr/bin/bash
 
-OUTDIR=gen_tttjm
-#exec >> ${OUTDIR}.log  2>&1
-
 # need to specify python3.8 for CS8, while CS9 has python3.9 as default already
 PYTHON=python3
-
-
+OUTDIR=gen_tttjm
+#exec >> ${OUTDIR}.log  2>&1
 MG="$PYTHON $PWD/MG5_aMC_v3_4_2/bin/mg5_aMC"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib/
-export PYTHONPATH=$PYTHONPATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib64/python3.9/site-packages/LHAPDF-6.3.0-py3.9-linux-x86_64.egg/
-
-echo " >> Using MG executable: $MG"
-echo " >> Using LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
-echo " >> Using PYTHONPATH: $PYTHONPATH"
 
 ### get model
 MODEL=loop_qcd_qed_sm # should automatically use 5FS

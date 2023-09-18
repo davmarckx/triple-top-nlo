@@ -1,0 +1,2 @@
+echo " >> Using LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+echo " >> Using PYTHONPATH: $PYTHONPATH"

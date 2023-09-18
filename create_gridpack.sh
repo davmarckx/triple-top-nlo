@@ -39,6 +39,10 @@ function install_mg() {
 }
 
 function create_gridpack(){
+    MG="$PYTHON $PWD/MG5_aMC_v3_4_2/bin/mg5_aMC"
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib/
+    export PYTHONPATH=$PYTHONPATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib64/python3.9/site-packages/LHAPDF-6.3.0-py3.9-linux-x86_64.egg/
+
     script=$1.sh
     echo $script
     bash ./$script
