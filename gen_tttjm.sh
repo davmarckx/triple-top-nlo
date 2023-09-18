@@ -64,7 +64,6 @@ for FIXEDSCALE in False ; do
         set complex_mass_scheme True            # not actually needed if resonance width hardcoded
         generate p p > t t t~ j [QCD]
         output ${OUTDIR}
-        y # just in case some installation or overwritting is needed
         " > ${OUTDIR}.cmd
         if [[ ! -d "${OUTDIR}" ]] ; then
         	date
@@ -109,6 +108,7 @@ for FIXEDSCALE in False ; do
         set systematics_program systematics
         set systematics_arguments ['--mur=0.125,0.149,0.177,0.21,0.25,0.297,0.354,0.42,0.5,0.595,0.707,0.841,1,1.19,1.41,1.68,2,2.38,2.83,3.36,4,4.76,5.66,6.73,8', '--muf=0.125,0.149,0.177,0.21,0.25,0.297,0.354,0.42,0.5,0.595,0.707,0.841,1,1.19,1.41,1.68,2,2.38,2.83,3.36,4,4.76,5.66,6.73,8', '--pdf=central', '--together=mur,muf', '--dyn=-1']
         0" > ${OUTDIR}.cmd
+        $MG -f ${OUTDIR}.cmd
         date
     done
 done
