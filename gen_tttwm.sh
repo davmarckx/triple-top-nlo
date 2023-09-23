@@ -74,7 +74,7 @@ for FIXEDSCALE in False ; do
                   date
                   echo "--- Generate, output and patch"
                   time $MG -f ${OUTDIR}.cmd
-                  time patch -p0 <<< "$PATCH"
+                  time patch -p0 <<< "$PATCH" |& tee ${OUTDIR}_patches.log
             fi
 
 
@@ -115,7 +115,7 @@ for FIXEDSCALE in False ; do
             set systematics_program systematics
             set systematics_arguments ['--pdf=325300,316200,306000@0,322500@0,322700@0,322900@0,323100@0,323300@0,323500@0,323700@0,323900@0,305800,303200@0,292200@0,331300,331600,332100,332300@0,332500@0,332700@0,332900@0,333100@0,333300@0,333500@0,333700@0,14000,14066@0,14067@0,14069@0,14070@0,14100,14200@0,14300@0,27400,27500@0,27550@0,93300,61200,42780,315000@0,315200@0,262000@0,263000@0', '--start-id=1001','--mur=1,2,0.5', '--muf=1,2,0.5','--together=mur,muf', '--dyn=-1']
             0" > ${OUTDIR}.cmd
-            $MG -f ${OUTDIR}.cmd
+            $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
             date
       done
 done

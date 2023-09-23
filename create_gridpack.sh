@@ -25,12 +25,10 @@ step=$1
 process=$2
 function install_mg() {
     # Function to get MG342
-    logname=installation.log
-    exec >> $logname 2>&1
-
+    
     echo -e "$GREEN >> Installing MG $NC" 
     wget -O mg5.tar.gz https://launchpad.net/mg5amcnlo/3.0/3.4.x/+download/MG5_aMC_v3.4.2.tar.gz
-    tar xzf mg5.tar.gz
+    tar xzf mg5.tar.gz 
 
     # Install LHAPDF
     echo "install lhapdf6" >> installLhapdf.cmd

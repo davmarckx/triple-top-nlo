@@ -75,7 +75,7 @@ for FIXEDSCALE in False True ; do
                   date
                   echo "--- Generate, output and patch"
                   time $MG -f ${OUTDIR}.cmd
-                  time patch -p0 <<< "$PATCH"
+                  time patch -p0 <<< "$PATCH" |& tee ${OUTDIR}_patches.log
             fi
 
 
@@ -116,71 +116,8 @@ for FIXEDSCALE in False True ; do
             set systematics_program systematics
             set systematics_arguments ['--pdf=325300,316200,306000@0,322500@0,322700@0,322900@0,323100@0,323300@0,323500@0,323700@0,323900@0,305800,303200@0,292200@0,331300,331600,332100,332300@0,332500@0,332700@0,332900@0,333100@0,333300@0,333500@0,333700@0,14000,14066@0,14067@0,14069@0,14070@0,14100,14200@0,14300@0,27400,27500@0,27550@0,93300,61200,42780,315000@0,315200@0,262000@0,263000@0', '--start-id=1001','--mur=1,2,0.5', '--muf=1,2,0.5','--together=mur,muf', '--dyn=-1']
             0" > ${OUTDIR}.cmd
-            $MG -f ${OUTDIR}.cmd
+            $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
             date
 
       done
 done
-
-### results should be the following:
-## NLO, HT/2
-#   --------------------------------------------------------------
-#      Summary:
-#      Process p p > t t~ t~ W+ [QCD]
-#      Run at p-p collider (6500.0 + 6500.0 GeV)
-#      Number of events generated: 10000
-#      Total cross section: 5.203e-04 +- 1.5e-06 pb
-#   --------------------------------------------------------------
-#      Scale variation (computed from LHE events):
-#          Dynamical_scale_choice 3 (envelope of 9 values): 
-#              5.219e-04 pb  +15.4% -14.6%
-#      PDF variation (computed from LHE events):
-#          NNPDF23_nlo_as_0118_qed (101 members; using replicas method): 
-#              5.223e-04 pb  +10.2% -10.2%
-#   --------------------------------------------------------------
-## LO, HT/2
-#   --------------------------------------------------------------
-#      Summary:
-#      Process p p > t t~ t~ W+ [QCD]
-#      Run at p-p collider (6500.0 + 6500.0 GeV)
-#      Number of events generated: 10000
-#      Total cross section: 2.913e-04 +- 6.0e-07 pb
-#   --------------------------------------------------------------
-#      Scale variation (computed from LHE events):
-#          Dynamical_scale_choice 3 (envelope of 9 values): 
-#              2.913e-04 pb  +33.1% -24.1%
-#      PDF variation (computed from LHE events):
-#          NNPDF23_nlo_as_0118_qed (101 members; using replicas method): 
-#              2.915e-04 pb  +7.6% -7.6%
-#   --------------------------------------------------------------
-## NLO, 3mt+mw
-#   --------------------------------------------------------------
-#      Summary:
-#      Process p p > t t~ t~ W+ [QCD]
-#      Run at p-p collider (6500.0 + 6500.0 GeV)
-#      Number of events generated: 10000
-#      Total cross section: 5.232e-04 +- 1.5e-06 pb
-#   --------------------------------------------------------------
-#      Scale variation (computed from LHE events):
-#          Dynamical_scale_choice 0 (envelope of 9 values): 
-#              5.081e-04 pb  +17.3% -15.5%
-#      PDF variation (computed from LHE events):
-#          NNPDF23_nlo_as_0118_qed (101 members; using replicas method): 
-#              5.086e-04 pb  +7.9% -7.9%
-#   --------------------------------------------------------------
-## LO, 3mt+mw
-#   --------------------------------------------------------------
-#      Summary:
-#      Process p p > t t~ t~ W+ [QCD]
-#      Run at p-p collider (6500.0 + 6500.0 GeV)
-#      Number of events generated: 10000
-#      Total cross section: 2.724e-04 +- 5.6e-07 pb
-#   --------------------------------------------------------------
-#      Scale variation (computed from LHE events):
-#          Dynamical_scale_choice 0 (envelope of 9 values): 
-#              2.725e-04 pb  +33.1% -24.0%
-#      PDF variation (computed from LHE events):
-#          NNPDF23_nlo_as_0118_qed (101 members; using replicas method): 
-#              2.728e-04 pb  +7.7% -7.7%
-#   --------------------------------------------------------------
-
