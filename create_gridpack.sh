@@ -36,6 +36,12 @@ function install_mg() {
     echo "install lhapdf6" >> installLhapdf.cmd
     echo -e "$GREEN >> Installing LHAPDF6 $NC" 
     $MGPATH/bin/mg5_aMC -f installLhapdf.cmd
+
+    # Now modify the main MG config to read PDFs from CVMFS instead of downloading them
+    echo "cluster_temp_path = True" >> $MGPATH/input/mg5_configuration.txt 
+    echo "cluster_local_path = /cvmfs/cms.cern.ch/slc7_amd64_gcc10/external/lhapdf/6.3.0/share/LHAPDF/" >> $MGPATH/input/mg5_configuration.txt 
+
+
 }
 
 function create_gridpack(){
