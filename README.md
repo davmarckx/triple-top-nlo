@@ -4,6 +4,10 @@ Bash scripts to compute triple top-quark production (tttj and tttw) at NLO in QC
 
 
 ## Instructions
+This has to be run in a lxplus9 node since it requiers python3.9 and that's the default
+in RHEL9 distributions.
+### Clone repository
+`git clone git@github.com:Cvico/triple-top-nlo.git -b forCMS`
 ### Install MG+LHAPDF (only done once!!)
 The production requires Madgraph5_aMC@NLO v3.4.2 and LHAPDF6 installation. We also need
 to link the PDFs in the local directory to point to the ones stored in `/cvmfs/` just to
