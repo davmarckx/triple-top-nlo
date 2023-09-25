@@ -1,0 +1,12 @@
+executable = submit.sh
+getenv = True
+when_to_transfer_output = on_exit
++JobFlavour = "workday"
++JobBatchName = "ttt_plhe"
+output = tttplhe.stdout
+error = tttplhe.stderr
+log = tttplhe.stdlog
+request_memory = 8192
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel8-m-m20230425"
+queue
+
