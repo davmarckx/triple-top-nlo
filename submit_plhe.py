@@ -75,6 +75,10 @@ class job(object):
         
         script = [
             "#!/bin/bash",
+            "source /cvmfs/cms.cern.ch/cmsset_default.sh",
+            "cd /afs/cern.ch/user/c/cvicovil/CMSSW_13_3_0_pre4/src/",
+            "cmsenv",
+            "cd -",
             "seed={}".format(self.seed),
             "gridpack={}".format(self.jobmetadata.gridpack),
             "here=`pwd`",
@@ -105,7 +109,7 @@ class job(object):
     
 class job_submitter(object):
     """ Class to handle job submission in batch """
-    nevents_per_job = 2000 # Hardcoded
+    nevents_per_job = 100000 # Hardcoded
     def __init__(self, metadata):
         """ Constructor """
         self.gridpack = metadata.gridpack

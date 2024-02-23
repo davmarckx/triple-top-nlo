@@ -7,6 +7,6 @@ output = tttplhe.stdout
 error = tttplhe.stderr
 log = tttplhe.stdlog
 request_memory = 8192
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/cmssw/cms:rhel8-m-m20230425"
+MY.WantOS = "el9"
 queue
 
