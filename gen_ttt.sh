@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Main script to produce ttt
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib
+export PYTHONPATH=$PYTHONPATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib/python3.9/site-packages/lhapdf
 
 # need to specify python3.8 for CS8, while CS9 has python3.9 as default already
 PYTHON=python3
@@ -164,27 +166,21 @@ fi
 
 # Now submit
 $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
-
 # Now prepare gridpack
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib
-export PYTHONPATH=$PYTHONPATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib/python3.9/site-packages/lhapdf
-if [[ ! -d ${1}_gridpack ]]; then
-	MGINSTALLPATH=$PWD/MG5_aMC_v3_4_2
-	LHAPDFPATH=$MGINSTALLPATH/HEPTools/lhapdf6_py3/bin/lhapdf-config
-	mkdir ${1}_gridpack
-	pushd ${1}_gridpack/
-	mv ../${OUTDIR} process
+MGINSTALLPATH=$PWD/MG5_aMC_v3_4_2
+LHAPDFPATH=$MGINSTALLPATH/HEPTools/lhapdf6_py3/bin/lhapdf-config
+mkdir ${1}_gridpack
+pushd ${1}_gridpack/
+mv ../${OUTDIR} process
 
-	# Now copy stuff for grid production
-	cp ../runcmsgrid.sh .
-	chmod +x runcmsgrid.sh
-	sed -i "s|\$LHAPDFPATH|$LHAPDFPATH|g" runcmsgrid.sh
-	sed -i "s|\$MGINSTALLPATH|$MGINSTALLPATH|g" runcmsgrid.sh
+# Now copy stuff for grid production
+cp ../runcmsgrid.sh .
+cp ../${OUTDIR}*log .
+cp ../${OUTDIR}*cmd .
+chmod +x runcmsgrid.sh
+sed -i "s|__LHAPDFPATH__|$LHAPDFPATH|g" runcmsgrid.sh
+sed -i "s|__MGINSTALLPATH__|$MGINSTALLPATH|g" runcmsgrid.sh
 
-	mv $1 process
-	# Now tar it into a tarball
-	XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}_tarball.tar.xz process runcmsgrid.sh *generation*.log
-	popd
-else
-	echo -e $RED ${1}_gridpack already exists. $NC
-fi
+# Now tar it into a tarball
+XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}_tarball.tar.xz process runcmsgrid.sh *generation*.log *cmd
+popd
