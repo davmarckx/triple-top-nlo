@@ -17,14 +17,13 @@ avoid having to download them again and again.
 This will set up everything and install MG code under `MG5_aMC_v3_4_2`.
 
 ### Create basic folder
-`./create_gridpack $process`
+`./gen_ttt.sh $process`
 
-Where process can be any script within this repository (without the `.sh` extension). 
-**Note**: For the moment we haven't adapted the `*_lox.sh` ones. As of now the main
-interest is just the NLO ones.  This will generate some events, and prepare the necessary 
-templates to keep generating events without having to recompile everything. Then
-it will create a gridpack-like file that can be used for batch generation in condor or slurm
-clusters.
+Where $process can be:
+ * `nlo_{PRODUCTION_MODE}`
+ * `lo_ewk_{PRODUCTION_MODE}`
+
+Where `PRODUCTION_MODE` can be `tttwp`, `tttwm`, `tttjp`, `tttjm`.
 
 ### Generate events
 This can be done using the `submit_plhe.py` script. It can be done in single machine mode, for
@@ -42,46 +41,10 @@ ensure independance between different generations. The output of each job is jus
 little disk space.
 
 **Condor submission**
-The script is the same, but adding `--condor` anywhere after the `$SEED` part.
+The script is the same, but adding `--mode condor` anywhere after the `$SEED` part.
 
 **Slurm submission**
-The script is the same, but adding `--slurm` anywhere after the `$SEED` part.
-
-## Specific instructions for contacts
-**Run for tttjm**
-Please not that these scripts will:
- * Unpack \~500MB gridpack
- * For 50000 events, this is done in 50000/2000=25 jobs. Meaning that a total of about 12 GB will be unpacked
-   in a condor node. If we set the number of events generated simultaneously to something very large, then
-   it will probably create problems in the lxplus nodes. **We don't want that**
- * Instead, produce events in batches of 50k or 100k events. Wait for them to finish, and continue with the following
-   set of X events.
-```
-./installMG # EXECUTE ONLY ONCE!!!
-./create_gridpack gen_tttjm
-python3 submit_plhe.py $SEED --gridpack $PWD/gen_tttjm_tarball.tar.xz --outpath ./LHE_ttt_jm/ --nevents 50000
-```
-
-**Run for tttjp**
-```
-./installMG # EXECUTE ONLY ONCE!!!
-./create_gridpack gen_tttjp
-python3 submit_plhe.py $SEED --gridpack $PWD/gen_tttjp_tarball.tar.xz --outpath ./LHE_ttt_jp/ --nevents 50000 
-```
-
-**Run for tttwp**
-```
-./installMG # EXECUTE ONLY ONCE!!!
-./create_gridpack gen_tttwm
-python3 submit_plhe.py $SEED --gridpack $PWD/gen_tttwm_tarball.tar.xz --outpath ./LHE_ttt_wm/ --nevents 50000
-```
-
-**Run for tttwp**
-```
-./installMG # EXECUTE ONLY ONCE!!!
-./create_gridpack gen_tttjp
-python3 submit_plhe.py $SEED --gridpack $PWD/gen_tttjp_tarball.tar.xz --outpath ./LHE_ttt_jp/ --nevents 50000 
-```
+The script is the same, but adding `--mode slurm` anywhere after the `$SEED` part.
 
 # Notes
 1. The original author of this code is @gdurieux code: https://github.com/gdurieux/triple-top-nlo. Contact: Gauthier Durieux. DOI: https://doi.org/10.5281/zenodo.7682519
