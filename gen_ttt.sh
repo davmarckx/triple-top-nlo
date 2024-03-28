@@ -9,7 +9,7 @@ PYTHON=python3
 MG="$PYTHON $PWD/MG5_aMC_v3_4_2/bin/mg5_aMC"
 
 mode=$1
-
+LO=$2
 
 # Load patches if required
 case $mode in
@@ -44,30 +44,26 @@ case $mode in
 
 	lo_ewk_tttwp)
 		echo ">> Producing tttW+"
-		source patches/patch_tttwp.sh
 		MODEL=loop_qcd_qed_sm
-		PROCESS="p p > t t~ t~ W+ [QCD]"
+		PROCESS="p p > t t~ t~ W+ QED=3 QCD=3 QED^2==$(( 0 + 2*$LO )) QCD^2==$(( 8 - 2*$LO ))"
 		OUTDIR=lo_ewk_tttwp
 		;;
 	lo_ewk_tttwm)
 		echo ">> Producing tttW-"
-		source patches/patch_tttwm.sh
 		MODEL=loop_qcd_qed_sm
-		PROCESS="p p > t t t~ W- [QCD]"
+		PROCESS="p p > t t t~ W- QED=3 QCD=3 QED^2==$(( 0 + 2*$LO )) QCD^2==$(( 8 - 2*$LO ))"
 		OUTDIR=lo_ewk_tttwm
 		;;
 	lo_ewk_tttjp)
 		echo ">> Producing tttj+"
-		source patches/patch_tttjp.sh
 		MODEL=loop_qcd_qed_sm
-		PROCESS="p p > t t~ t~ j [QCD]"
+		PROCESS="p p > t t~ t~ j QED=4 QCD=2 QED^2==$(( 2 + 2*$LO )) QCD^2==$(( 6 - 2*$LO ))"
 		OUTDIR=lo_ewk_tttjp
 		;;
 	lo_ewk_tttjm)
 		echo ">> Producing tttj-"
-		source patches/patch_tttjm.sh
 		MODEL=loop_qcd_qed_sm
-		PROCESS="p p > t t t~ j [QCD]"
+		PROCESS="p p > t t t~ j QED=4 QCD=2 QED^2==$(( 2 + 2*$LO )) QCD^2==$(( 6 - 2*$LO ))"
 		OUTDIR=lo_ewk_tttjm
 		;;
 esac
@@ -159,6 +155,7 @@ elif [[ $mode == *"lo_ewk"* ]]; then
 	set dsqrt_q2fact2 519.9
 	set scalefact 1.
 	set use_syst True
+    set gridpack True
 	set systematics_program systematics
 	set systematics_arguments ['--pdf=325300,316200,306000@0,322500@0,322700@0,322900@0,323100@0,323300@0,323500@0,323700@0,323900@0,305800,303200@0,292200@0,331300,331600,332100,332300@0,332500@0,332700@0,332900@0,333100@0,333300@0,333500@0,333700@0,14000,14066@0,14067@0,14069@0,14070@0,14100,14200@0,14300@0,27400,27500@0,27550@0,93300,61200,42780,315000@0,315200@0,262000@0,263000@0', '--start_id=1001','--mur=1,2,0.5', '--muf=1,2,0.5','--together=mur,muf', '--dyn=-1']
 	0" > ${OUTDIR}.cmd
