@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Main script to produce ttt
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib
-export PYTHONPATH=$PYTHONPATH:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib:$PWD/MG5_aMC_v3_4_2/HEPTools/lhapdf6_py3/lib/python3.9/site-packages/lhapdf
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib
+export PYTHONPATH=$PYTHONPATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib/python3.9/site-packages/LHAPDF-6.4.0-py3.9-linux-x86_64.egg/
 
 # need to specify python3.8 for CS8, while CS9 has python3.9 as default already
 PYTHON=python3
@@ -165,7 +165,7 @@ fi
 $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
 # Now prepare gridpack
 MGINSTALLPATH=$PWD/MG5_aMC_v3_4_2
-LHAPDFPATH=$MGINSTALLPATH/HEPTools/lhapdf6_py3/bin/lhapdf-config
+LHAPDFPATH=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-fccef38e2654e6e08a1bb6a483817484/bin/lhapdf-config
 mkdir ${1}_gridpack
 pushd ${1}_gridpack/
 mv ../${OUTDIR} process

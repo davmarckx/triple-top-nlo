@@ -19,7 +19,7 @@ function install_mg() {
     # Install LHAPDF
     echo "install lhapdf6" >> installLhapdf.cmd
     echo -e "$GREEN >> Installing LHAPDF6 $NC" 
-    python3 $MGPATH/bin/mg5_aMC -f installLhapdf.cmd
+    python3 $MGPATH/bin/mg5_aMC #-f installLhapdf.cmd
 
 
     if [[ -d $MGPATH/HEPTools/lhapdf6_py3/share/LHAPDF ]]; then 
