@@ -1,4 +1,9 @@
 #!/bin/bash
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+if [[ ! -d CMSSW_14_0_1 ]]; then cmsrel CMSSW_14_0_1; fi
+cd CMSSW_14_0_1
+cmsenv
+cd -
 
 nevt=${1}
 echo "%MSG-MG5 number of events requested = $nevt"

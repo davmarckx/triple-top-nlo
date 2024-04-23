@@ -16,7 +16,6 @@ avoid having to download them again and again.
 
 This will set up everything and install MG code under `MG5_aMC_v3_4_2`.
 
-
 ### Everytime we open a new session
 `source setup_env.sh`
 ### Create basic folder

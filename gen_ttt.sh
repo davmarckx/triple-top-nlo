@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Setup CMSSW
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+if [[ ! -d CMSSW_14_0_1 ]]; then cmsrel CMSSW_14_0_1; fi
+cd CMSSW_14_0_1
+cmsenv
+cd -
+
 # Main script to produce ttt
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib
 export PYTHONPATH=$PYTHONPATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib/python3.9/site-packages/LHAPDF-6.4.0-py3.9-linux-x86_64.egg/
@@ -15,28 +22,28 @@ LO=$2
 case $mode in
 	nlo_tttwp)
 		echo ">> Producing tttW+"
-		source patches/patch_tttwp.sh
+		source patches/patch_tttwp.sh $mode
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t~ t~ W+ [QCD]"
 		OUTDIR=nlo_tttwp
 		;;
 	nlo_tttwm)
 		echo ">> Producing tttW-"
-		source patches/patch_tttwm.sh
+		source patches/patch_tttwm.sh $mode
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t t~ W- [QCD]"
 		OUTDIR=nlo_tttwm
 		;;
 	nlo_tttjp)
 		echo ">> Producing tttj+"
-		source patches/patch_tttjp.sh
+		source patches/patch_tttjp.sh $mode
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t~ t~ j [QCD]"
 		OUTDIR=nlo_tttjp
 		;;
 	nlo_tttjm)
 		echo ">> Producing tttj-"
-		source patches/patch_tttjm.sh
+		source patches/patch_tttjm.sh $mode
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t t~ j [QCD]"
 		OUTDIR=nlo_tttjm
@@ -81,13 +88,9 @@ time $MG -f ${OUTDIR}.cmd
 
 if [[ $mode == *"nlo"* ]]; then
 	# COMMANDS FOR RUNNING ON MADGRAPH NLO MODE
-	if [[ ! -d "${OUTDIR}" ]] ; then
-		date
-		echo "--- Generate, output and patch"
-
-		# IMPORTANT: Add the corresponding patch
-		time patch -p0 <<< "$PATCH" |& tee ${OUTDIR}_patches.log
-	fi
+	date
+	echo "--- Generate, output and patch"
+	time patch -p0 <<< "$PATCH" |& tee ${OUTDIR}_patch.log
 
 	### launch
 	date
@@ -124,12 +127,6 @@ if [[ $mode == *"nlo"* ]]; then
 	date
 elif [[ $mode == *"lo_ewk"* ]]; then
 	# COMMANDS FOR RUNNING ON MADGRAPH LO MODE
-	if [[ ! -d "${OUTDIR}" ]] ; then
-      date
-      echo "--- Generate, output and patch"
-      time $MG -f ${OUTDIR}.cmd
-	fi
-
 	### launch
 	date
 	echo "launch ${OUTDIR}
@@ -163,6 +160,7 @@ fi
 
 # Now submit
 $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
+
 # Now prepare gridpack
 MGINSTALLPATH=$PWD/MG5_aMC_v3_4_2
 LHAPDFPATH=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-fccef38e2654e6e08a1bb6a483817484/bin/lhapdf-config
@@ -175,9 +173,7 @@ cp ../runcmsgrid.sh .
 cp ../${OUTDIR}*log .
 cp ../${OUTDIR}*cmd .
 chmod +x runcmsgrid.sh
-sed -i "s|__LHAPDFPATH__|$LHAPDFPATH|g" runcmsgrid.sh
-sed -i "s|__MGINSTALLPATH__|$MGINSTALLPATH|g" runcmsgrid.sh
 
 # Now tar it into a tarball
-XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}+$LO+_tarball.tar.xz process runcmsgrid.sh *generation*.log *cmd
+XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}${LO}_tarball.tar.xz process runcmsgrid.sh *generation*.log *cmd
 popd
