@@ -1,3 +1,4 @@
+OUTDIR=$1
 PATCH="--- ${OUTDIR}/SubProcesses/P0_gb_tttxwm/matrix_4.f	2023-02-21 19:58:46.000000001 +0100
 +++ ${OUTDIR}/SubProcesses/P0_gb_tttxwm/matrix_4.f	2023-02-21 19:58:46.000000001 +0100
 @@ -486,7 +486,8 @@
