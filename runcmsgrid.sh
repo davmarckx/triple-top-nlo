@@ -13,9 +13,9 @@ LHEWORKDIR=`pwd`
 cd $LHEWORKDIR/process
 
 #make sure lhapdf points to local cmssw installation area
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:__MGINSTALLPATH__/HEPTools/lhapdf6_py3/lib/
-export PYTHONPATH=$PYTHONPATH:__MGINSTALLPATH__/HEPTools/lhapdf6_py3/lib:__MGINSTALLPATH__/HEPTools/lhapdf6_py3/lib64/python3.9/site-packages/lhapdf/
-LHAPDFCONFIG=`echo "__LHAPDFPATH__"`
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib
+export PYTHONPATH=$PYTHONPATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib/python3.9/site-packages/LHAPDF-6.4.0-py3.9-linux-x86_64.egg/
+LHAPDFPATH=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-fccef38e2654e6e08a1bb6a483817484/bin/lhapdf-config
 
 # workaround for el8
 echo "lhapdf_py3 = $LHAPDFCONFIG" >> ./Cards/amcatnlo_configuration.txt

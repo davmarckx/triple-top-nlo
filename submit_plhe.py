@@ -6,6 +6,7 @@ author: Carlos Vico (carlos.vico.villalba@cern.ch)
 
 import os
 import sys
+import math
 from optparse import OptionParser
 import random
 import time
@@ -76,8 +77,11 @@ class job(object):
         script = [
             "#!/bin/bash",
             "source /cvmfs/cms.cern.ch/cmsset_default.sh",
-            "cd /afs/cern.ch/user/c/cvicovil/CMSSW_13_3_0_pre4/src/",
+            "cd /user/dmarckx/CMSSW_13_3_0_pre4/src/",
             "cmsenv",
+            # added these lines because the job needs to have the lhapdf paths:
+            "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib"
+            "export PYTHONPATH=$PYTHONPATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib/python3.9/site-packages/LHAPDF-6.4.0-py3.9-linux-x86_64.egg/"
             "cd -",
             "seed={}".format(self.seed),
             "gridpack={}".format(self.jobmetadata.gridpack),
@@ -123,7 +127,7 @@ class job_submitter(object):
 
     def configure_jobsubmission(self):
         """ Configure job submission metadata. """
-        self.njobs = self.nevents // self.nevents_per_job
+        self.njobs = math.ceil(float(self.nevents) / float(self.nevents_per_job))
         return
     
     def PrepareJobs(self):

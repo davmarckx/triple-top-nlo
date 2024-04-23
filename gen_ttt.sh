@@ -46,25 +46,25 @@ case $mode in
 		echo ">> Producing tttW+"
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t~ t~ W+ QED=3 QCD=3 QED^2==$(( 0 + 2*$LO )) QCD^2==$(( 8 - 2*$LO ))"
-		OUTDIR=lo_ewk_tttwp
+		OUTDIR=lo_ewk_tttwp$LO
 		;;
 	lo_ewk_tttwm)
 		echo ">> Producing tttW-"
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t t~ W- QED=3 QCD=3 QED^2==$(( 0 + 2*$LO )) QCD^2==$(( 8 - 2*$LO ))"
-		OUTDIR=lo_ewk_tttwm
+		OUTDIR=lo_ewk_tttwm$LO
 		;;
 	lo_ewk_tttjp)
 		echo ">> Producing tttj+"
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t~ t~ j QED=4 QCD=2 QED^2==$(( 2 + 2*$LO )) QCD^2==$(( 6 - 2*$LO ))"
-		OUTDIR=lo_ewk_tttjp
+		OUTDIR=lo_ewk_tttjp$LO
 		;;
 	lo_ewk_tttjm)
 		echo ">> Producing tttj-"
 		MODEL=loop_qcd_qed_sm
 		PROCESS="p p > t t t~ j QED=4 QCD=2 QED^2==$(( 2 + 2*$LO )) QCD^2==$(( 6 - 2*$LO ))"
-		OUTDIR=lo_ewk_tttjm
+		OUTDIR=lo_ewk_tttjm$LO
 		;;
 esac
 
@@ -166,8 +166,8 @@ $MG -f ${OUTDIR}.cmd |& tee ${OUTDIR}_generation.log
 # Now prepare gridpack
 MGINSTALLPATH=$PWD/MG5_aMC_v3_4_2
 LHAPDFPATH=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-fccef38e2654e6e08a1bb6a483817484/bin/lhapdf-config
-mkdir ${1}_gridpack
-pushd ${1}_gridpack/
+mkdir ${1}${LO}_gridpack
+pushd ${1}${LO}_gridpack/
 mv ../${OUTDIR} process
 
 # Now copy stuff for grid production
@@ -179,5 +179,5 @@ sed -i "s|__LHAPDFPATH__|$LHAPDFPATH|g" runcmsgrid.sh
 sed -i "s|__MGINSTALLPATH__|$MGINSTALLPATH|g" runcmsgrid.sh
 
 # Now tar it into a tarball
-XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}_tarball.tar.xz process runcmsgrid.sh *generation*.log *cmd
+XZ_OPT="--lzma2=preset=9,dict=512MiB" tar -cJpf ${1}+$LO+_tarball.tar.xz process runcmsgrid.sh *generation*.log *cmd
 popd
