@@ -1,7 +1,6 @@
 #!/bin/bash
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-if [[ ! -d CMSSW_14_0_1 ]]; then cmsrel CMSSW_14_0_1; fi
-cd CMSSW_14_0_1
+cd /user/dmarckx/CMSSW_13_3_0_pre4/src
 cmsenv
 cd -
 
@@ -21,6 +20,8 @@ cd $LHEWORKDIR/process
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib
 export PYTHONPATH=$PYTHONPATH:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib:/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/lib/python3.9/site-packages/LHAPDF-6.4.0-py3.9-linux-x86_64.egg/
 LHAPDFPATH=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-fccef38e2654e6e08a1bb6a483817484/bin/lhapdf-config
+LHAPDFCONFIG=/cvmfs/cms.cern.ch/slc7_amd64_gcc12/external/lhapdf/6.4.0-5969784ee06af968580d5197ca83d374/bin/lhapdf-config
+MG5PATH=/user/dmarckx/triple-top-nlo/MG5_aMC_v3_4_2/
 
 # workaround for el8
 echo "lhapdf_py3 = $LHAPDFCONFIG" >> ./Cards/amcatnlo_configuration.txt
@@ -84,7 +85,7 @@ if [ ! -e $LHEWORKDIR/header_for_madspin.txt ]; then
         mv ./Cards/.madspin_card.dat ./Cards/madspin_card.dat
         echo "import events.lhe" > madspinrun.dat
         cat ./Cards/madspin_card.dat >> madspinrun.dat
-        $LHEWORKDIR/mgbasedir/MadSpin/madspin madspinrun.dat 
+        $MG5PATH/MadSpin/madspin madspinrun.dat 
         # add header back 
 	gzip -d events_decayed.lhe.gz  
 	if [ -e initrwgt.txt ]; then
@@ -134,7 +135,7 @@ else
     echo "import $LHEWORKDIR/cmsgrid_predecay.lhe" > madspinrun.dat
     echo "set ms_dir $LHEWORKDIR/process/madspingrid" >> madspinrun.dat
     echo "launch" >> madspinrun.dat
-    $LHEWORKDIR/mgbasedir/MadSpin/madspin madspinrun.dat
+    $MG5PATH/MadSpin/madspin madspinrun.dat
     rm madspinrun.dat
     rm cmsgrid_predecay.lhe.gz
     mv cmsgrid_predecay_decayed.lhe.gz cmsgrid_final.lhe.gz

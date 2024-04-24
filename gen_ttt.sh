@@ -2,8 +2,8 @@
 
 # Setup CMSSW
 source /cvmfs/cms.cern.ch/cmsset_default.sh
-if [[ ! -d CMSSW_14_0_1 ]]; then cmsrel CMSSW_14_0_1; fi
-cd CMSSW_14_0_1
+#if [[ ! -d CMSSW_14_0_1 ]]; then cmsrel CMSSW_14_0_1; fi
+cd /user/dmarckx/CMSSW_13_3_0_pre4/src
 cmsenv
 cd -
 
@@ -17,6 +17,7 @@ MG="$PYTHON $PWD/MG5_aMC_v3_4_2/bin/mg5_aMC"
 
 mode=$1
 LO=$2
+#SCALECHOICE=$3
 
 # Load patches if required
 case $mode in
@@ -145,6 +146,13 @@ elif [[ $mode == *"lo_ewk"* ]]; then
 	set WW   0.  # 2.084650                  # irrelevant at LO
 	set WT   0.  # 1.36728
 	set dynamical_scale_choice 3             # -1 and 3 are the same at MG5_aMC but not in MG5_LO
+                                                 # for own clarity: 
+                                                 # -1 : MadGraph5_aMC@NLO default (different for LO/NLO/ ickkw mode) same as previous version.
+                                                 # 0 : Tag reserved for user define dynamical scale (need to be added in setscales.f).
+                                                 # 1 : Total transverse energy of the event.
+                                                 # 2 : sum of the transverse mass
+                                                 # 3 : sum of the transverse mass divide by 2
+                                                 # 4 : \sqrt(s), partonic energy (only for LO run)
 	set fixed_ren_scale False                # those two actually determine fixed vs dyn scale
 	set fixed_fac_scale False                # those two actually determine fixed vs dyn scale
 	set scale 519.9                          # 3*mt = 3*173.3 = 519.9 GeV
